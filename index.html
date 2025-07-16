@@ -5,29 +5,84 @@
   <title>Secciones desde Excel</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
-    section { margin-bottom: 2em; border: 1px solid #ccc; padding: 1em; }
-    h2 { color: darkblue; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #999; padding: 0.5em; }
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #003580;
+      color: white;
+      padding: 1em 2em;
+      font-size: 1.5em;
+    }
+
+    .container {
+      padding: 2em;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.3em;
+      margin-bottom: 0.5em;
+      color: #003580;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1em;
+      margin-bottom: 2em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1em;
+    }
+
+    th {
+      background-color: #f0f6ff;
+      color: #003580;
+      padding: 0.75em;
+      text-align: left;
+      border-bottom: 2px solid #ccc;
+    }
+
+    td {
+      padding: 0.75em;
+      border-bottom: 1px solid #eee;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1em;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Contenido desde archivos Excel</h1>
+  <header>Explorar Alojamiento</header>
+  <div class="container">
+    <div class="card">
+      <div class="section-title">Sección 1 (e1.xlsx)</div>
+      <div id="table1">Cargando...</div>
+    </div>
 
-  <section id="sec1">
-    <h2>Sección 1 (e1.xlsx)</h2>
-    <div id="table1">Cargando...</div>
-  </section>
+    <div class="card">
+      <div class="section-title">Sección 2 (e2.xlsx)</div>
+      <div id="table2">Cargando...</div>
+    </div>
 
-  <section id="sec2">
-    <h2>Sección 2 (e2.xlsx)</h2>
-    <div id="table2">Cargando...</div>
-  </section>
-
-  <section id="sec3">
-    <h2>Sección 3 (e3.xlsx)</h2>
-    <div id="table3">Cargando...</div>
-  </section>
+    <div class="card">
+      <div class="section-title">Sección 3 (e3.xlsx)</div>
+      <div id="table3">Cargando...</div>
+    </div>
+  </div>
 
   <script>
     async function cargarExcel(nombreArchivo, contenedorId) {
