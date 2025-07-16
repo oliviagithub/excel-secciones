@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Secciones desde Excel</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    section { margin-bottom: 2em; border: 1px solid #ccc; padding: 1em; }
+    h2 { color: darkblue; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #999; padding: 0.5em; }
+  </style>
+</head>
+<body>
+  <h1>Contenido desde archivos Excel</h1>
+
+  <section id="sec1">
+    <h2>Sección 1 (e1.xlsx)</h2>
+    <div id="table1">Cargando...</div>
+  </section>
+
+  <section id="sec2">
+    <h2>Sección 2 (e2.xlsx)</h2>
+    <div id="table2">Cargando...</div>
+  </section>
+
+  <section id="sec3">
+    <h2>Sección 3 (e3.xlsx)</h2>
+    <div id="table3">Cargando...</div>
+  </section>
+
+  <script>
+    async function cargarExcel(nombreArchivo, contenedorId) {
+      try {
+        const response = await fetch(nombreArchivo);
+        const arrayBuffer = await response.arrayBuffer();
+        const workbook = XLSX.read(arrayBuffer, { type: "array" });
+        const primeraHoja = workbook.SheetNames[0];
+        const datos = XLSX.utils.sheet_to_html(workbook.Sheets[primeraHoja]);
+        document.getElementById(contenedorId).innerHTML = datos;
+      } catch (error) {
+        document.getElementById(contenedorId).innerText = "Error al cargar " + nombreArchivo;
+        console.error(error);
+      }
+    }
+
+    cargarExcel("e1.xlsx", "table1");
+    cargarExcel("e2.xlsx", "table2");
+    cargarExcel("e3.xlsx", "table3");
+  </script>
+</body>
+</html>
