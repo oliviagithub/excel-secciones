@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contenido desde Excel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        .contenido {
+            margin-bottom: 40px;
+        }
+        img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Contenido cargado dinámicamente desde Excel</h1>
+
+<div id="contenido-container">
+    <div class="contenido">
+        <h2 id="texto-1">Texto 1</h2>
+        <img id="imagen-1" src="imagenes/placeholder.jpg" alt="Imagen 1">
+    </div>
+    <div class="contenido">
+        <h2 id="texto-2">Texto 2</h2>
+        <img id="imagen-2" src="imagenes/placeholder.jpg" alt="Imagen 2">
+    </div>
+    <div class="contenido">
+        <h2 id="texto-3">Texto 3</h2>
+        <img id="imagen-3" src="imagenes/placeholder.jpg" alt="Imagen 3">
+    </div>
+</div>
+
+<script>
+function cargarContenidoDesdeExcel(rutaArchivo) {
+    fetch(rutaArchivo)
+        .then(res => res.arrayBuffer())
+        .then(data => {
+            const workbook = XLSX.read(data, {type: 'array'});
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const filas = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+            for (let i = 1; i < filas.length; i++) {
+                const fila = filas[i];
+                const id = fila[0];
+                const texto = fila[1];
+                const imagen = fila[2];
+
+                const textoElemento = document.getElementById(`texto-${id}`);
+                const imagenElemento = document.getElementById(`imagen-${id}`);
+
+                if (textoElemento) textoElemento.textContent = texto;
+                if (imagenElemento) imagenElemento.src = imagen;
+            }
+        })
+        .catch(err => {
+            console.error("Error al cargar el archivo Excel:", err);
+        });
+}
+
+// Ejecutar al cargar
+cargarContenidoDesdeExcel('contenido.xlsx');
+</script>
+
+</body>
+</html>
