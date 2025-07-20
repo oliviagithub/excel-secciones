@@ -1,43 +1,20 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Fichas de Alojamientos</title>
-  <link rel="stylesheet" href="estilos.css">
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <title>Fichas de Hoteles</title>
+  <link rel="stylesheet" href="estilo.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-  <div id="contenedorFichas">Cargando fichas desde Excel...</div>
 
-  <script>
-    async function cargarFichas() {
-      try {
-        const resp = await fetch('ficha.xlsx');
-        const data = await resp.arrayBuffer();
-        const workbook = XLSX.read(data, { type: 'array' });
-        const hoja = workbook.Sheets[workbook.SheetNames[0]];
-        const datos = XLSX.utils.sheet_to_json(hoja);
-        const contenedor = document.getElementById("contenedorFichas");
-        contenedor.innerHTML = "";
+  <h1>Fichas de Hoteles</h1>
+  <p>Seleccioná el archivo Excel con las fichas:</p>
+  <input type="file" id="excelFile" accept=".xlsx">
 
-        datos.forEach(ficha => {
-          contenedor.innerHTML += `
-            <div class="ficha">
-              <img src="${ficha.imagen}" alt="Imagen alojamiento">
-              <h1 class="titulo">${ficha.titulo}</h1>
-              <p class="descripcion">${ficha.descripcion}</p>
-              <p class="precio">${ficha.precio}</p>
-              <p class="ubicacion">${ficha.ubicacion}</p>
-            </div>
-          `;
-        });
-      } catch (error) {
-        document.getElementById("contenedorFichas").innerText = "Error al cargar los datos.";
-        console.error(error);
-      }
-    }
+  <div id="contenedor-fichas"></div>
 
-    cargarFichas();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
