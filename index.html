@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Fichas de Hoteles</title>
-  <link rel="stylesheet" href="estilo.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fichas de Cabañas</title>
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+    <h1>Información de Cabañas</h1>
+    <div id="contenedor-fichas">
+        <p>Cargando información de las cabañas...</p>
+    </div>
 
-  <h1>Fichas de Hoteles</h1>
-  <p>Seleccioná el archivo Excel con las fichas:</p>
-  <input type="file" id="excelFile" accept=".xlsx">
-
-  <div id="contenedor-fichas"></div>
-
-  <script src="script.js"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
