@@ -1,70 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Contenido desde Excel</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        .contenido {
-            margin-bottom: 40px;
-        }
-        img {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Fichas de Alojamientos</title>
+  <link rel="stylesheet" href="estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
+  <div id="contenedorFichas">Cargando fichas desde Excel...</div>
 
-<h1>Contenido cargado dinámicamente desde Excel</h1>
+  <script>
+    async function cargarFichas() {
+      try {
+        const resp = await fetch('ficha.xlsx');
+        const data = await resp.arrayBuffer();
+        const workbook = XLSX.read(data, { type: 'array' });
+        const hoja = workbook.Sheets[workbook.SheetNames[0]];
+        const datos = XLSX.utils.sheet_to_json(hoja);
+        const contenedor = document.getElementById("contenedorFichas");
+        contenedor.innerHTML = "";
 
-<div id="contenido-container">
-    <div class="contenido">
-        <h2 id="texto-1">Texto 1</h2>
-        <img id="imagen-1" src="imagenes/placeholder.jpg" alt="Imagen 1">
-    </div>
-    <div class="contenido">
-        <h2 id="texto-2">Texto 2</h2>
-        <img id="imagen-2" src="imagenes/placeholder.jpg" alt="Imagen 2">
-    </div>
-    <div class="contenido">
-        <h2 id="texto-3">Texto 3</h2>
-        <img id="imagen-3" src="imagenes/placeholder.jpg" alt="Imagen 3">
-    </div>
-</div>
-
-<script>
-function cargarContenidoDesdeExcel(rutaArchivo) {
-    fetch(rutaArchivo)
-        .then(res => res.arrayBuffer())
-        .then(data => {
-            const workbook = XLSX.read(data, {type: 'array'});
-            const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-            const filas = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-
-            for (let i = 1; i < filas.length; i++) {
-                const fila = filas[i];
-                const id = fila[0];
-                const texto = fila[1];
-                const imagen = fila[2];
-
-                const textoElemento = document.getElementById(`texto-${id}`);
-                const imagenElemento = document.getElementById(`imagen-${id}`);
-
-                if (textoElemento) textoElemento.textContent = texto;
-                if (imagenElemento) imagenElemento.src = imagen;
-            }
-        })
-        .catch(err => {
-            console.error("Error al cargar el archivo Excel:", err);
+        datos.forEach(ficha => {
+          contenedor.innerHTML += `
+            <div class="ficha">
+              <img src="${ficha.imagen}" alt="Imagen alojamiento">
+              <h1 class="titulo">${ficha.titulo}</h1>
+              <p class="descripcion">${ficha.descripcion}</p>
+              <p class="precio">${ficha.precio}</p>
+              <p class="ubicacion">${ficha.ubicacion}</p>
+            </div>
+          `;
         });
-}
+      } catch (error) {
+        document.getElementById("contenedorFichas").innerText = "Error al cargar los datos.";
+        console.error(error);
+      }
+    }
 
-// Ejecutar al cargar
-cargarContenidoDesdeExcel('contenido.xlsx');
-</script>
-
+    cargarFichas();
+  </script>
 </body>
 </html>
